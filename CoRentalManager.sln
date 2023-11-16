@@ -5,6 +5,10 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPSDataManager", "MPSDataManager\MPSDataManager.csproj", "{78C897AC-A0C9-440A-B9E5-ACEDDC14FA4A}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "MPSData", "MPSData\MPSData.sqlproj", "{19B64C10-DF0A-4683-8CC0-4AACE81FADC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPSWPFDesktopUI", "MPSWPFDesktopUI\MPSWPFDesktopUI.csproj", "{F1989169-17B8-46C7-8674-905EEDDC4FC4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,16 @@ Global
 		{78C897AC-A0C9-440A-B9E5-ACEDDC14FA4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78C897AC-A0C9-440A-B9E5-ACEDDC14FA4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78C897AC-A0C9-440A-B9E5-ACEDDC14FA4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19B64C10-DF0A-4683-8CC0-4AACE81FADC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19B64C10-DF0A-4683-8CC0-4AACE81FADC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19B64C10-DF0A-4683-8CC0-4AACE81FADC9}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{19B64C10-DF0A-4683-8CC0-4AACE81FADC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19B64C10-DF0A-4683-8CC0-4AACE81FADC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19B64C10-DF0A-4683-8CC0-4AACE81FADC9}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{F1989169-17B8-46C7-8674-905EEDDC4FC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1989169-17B8-46C7-8674-905EEDDC4FC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1989169-17B8-46C7-8674-905EEDDC4FC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1989169-17B8-46C7-8674-905EEDDC4FC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
