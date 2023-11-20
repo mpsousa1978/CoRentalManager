@@ -39,6 +39,9 @@ namespace MPSWPFDesktopUI.ViewModels
                 NotifyOfPropertyChange(() => CanLogIn);
             }
         }
+
+
+        
         public bool CanLogIn
         {
             get
@@ -54,18 +57,48 @@ namespace MPSWPFDesktopUI.ViewModels
             }
         }
 
+        private bool _isErrorVisible;
+
+        public bool IsErrorVisible
+        {
+            get 
+            {
+                if (ErrorMessage?.Length > 0)
+                {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+
+        private string _errorMessage;
+
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+            set
+            {
+                _errorMessage = value;
+                NotifyOfPropertyChange(() => ErrorMessage);
+                NotifyOfPropertyChange(() => IsErrorVisible);
+
+            }
+        }
 
         public async Task LogIn()
         {
 
             try
             {
+                ErrorMessage = "";
                 var result = await _apiHelper.Authenticate(UserName, Password);
             }
             catch (Exception ex)
             {
 
-                Console.WriteLine(ex.Message);
+                ErrorMessage = ex.Message;
             }
 
         }

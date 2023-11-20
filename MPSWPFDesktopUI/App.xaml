@@ -9,6 +9,9 @@
                         <local:Bootstrapper x:Key="Bootstrapper"/>
                     </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibityConverter">
+                
+            </BooleanToVisibilityConverter>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

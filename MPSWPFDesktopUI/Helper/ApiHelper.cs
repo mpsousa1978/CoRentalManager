@@ -20,7 +20,6 @@ namespace MPSWPFDesktopUI.Helper
         {
             InitializeApiClente();
         }
-
         private void InitializeApiClente()
         {
             string api = ConfigurationManager.AppSettings["Api"]; //App.config
@@ -40,8 +39,6 @@ namespace MPSWPFDesktopUI.Helper
                 new KeyValuePair<string,string>("username",username),
                 new KeyValuePair<string,string>("password",password)
             });
-
-        //https://localhost:44363/swagger/ui/index#!/Auth/post_token
 
             using (HttpResponseMessage response = await apiClient.PostAsync("/Token", data))
             {
