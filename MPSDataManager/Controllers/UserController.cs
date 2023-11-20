@@ -10,26 +10,15 @@ using MPSDataMananger.Library.DataAccess;
 namespace MPSDataManager.Controllers
 {
     [Authorize]
-    
+
     public class UserController : ApiController
     {
-
-        public string Get(int id)
+        public UserModel GetById()
         {
-            return "value";
-        }
-
-        // GET: User/Details/5
-        public List<UserModel> GetById()
-        {
-
             string userID = RequestContext.Principal.Identity.GetUserId();
-
             UserData data = new UserData();
 
-            return data.GetUserById(userID);
+            return data.GetUserById(userID).First();
         }
-
-        
     }
 }

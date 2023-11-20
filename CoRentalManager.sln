@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPSWPFDesktopUI", "MPSWPFDe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPSDataManager.Library", "MPSDataMananger.library\MPSDataManager.Library.csproj", "{BF80CA6F-B185-4EE4-9C70-0B9EC05F435F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPSWPFDesktopUI.Library", "MPSWPFDesktopUI.Library\MPSWPFDesktopUI.Library.csproj", "{B4A1541F-D083-494D-B92A-EE142E14571C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{BF80CA6F-B185-4EE4-9C70-0B9EC05F435F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF80CA6F-B185-4EE4-9C70-0B9EC05F435F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF80CA6F-B185-4EE4-9C70-0B9EC05F435F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4A1541F-D083-494D-B92A-EE142E14571C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4A1541F-D083-494D-B92A-EE142E14571C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4A1541F-D083-494D-B92A-EE142E14571C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4A1541F-D083-494D-B92A-EE142E14571C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

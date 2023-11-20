@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro;
-using MPSWPFDesktopUI.Helper;
-using MPSWPFDesktopUI.Models;
+using MPSWPFDesktopUI.Library.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,6 +93,8 @@ namespace MPSWPFDesktopUI.ViewModels
             {
                 ErrorMessage = "";
                 var result = await _apiHelper.Authenticate(UserName, Password);
+                //Capture more information about the user
+                await _apiHelper.GetLoggedUserInfo(result.Access_Token);
             }
             catch (Exception ex)
             {

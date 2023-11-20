@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
-using MPSWPFDesktopUI.Helper;
+using MPSWPFDesktopUI.Library.Api;
+using MPSWPFDesktopUI.Library.Models;
 using MPSWPFDesktopUI.Models;
 using MPSWPFDesktopUI.ViewModels;
 using System;
@@ -33,6 +34,7 @@ namespace MPSWPFDesktopUI
             _container
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>()
+                .Singleton<ILoggedInUserModel, LoggedInUserModel>()
                 .Singleton<IApiHelper, ApiHelper>();
 
 

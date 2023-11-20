@@ -1,10 +1,13 @@
-﻿using MPSWPFDesktopUI.Models;
+﻿
+using MPSWPFDesktopUI.Library.Models;
+using MPSWPFDesktopUI.Models;
 using System.Threading.Tasks;
 
-namespace MPSWPFDesktopUI.Helper
+namespace MPSWPFDesktopUI.Library.Api
 {
     public interface IApiHelper
     {
         Task<AuthenticatedUserModel> Authenticate(string username, string password);
+        Task GetLoggedUserInfo(string token);
     }
 }
