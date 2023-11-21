@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using MPSWPFDesktopUI.EventsModel;
 using MPSWPFDesktopUI.Library.Api;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,11 @@ namespace MPSWPFDesktopUI.ViewModels
         private string _userName;
         private string _password;
         private IApiHelper _apiHelper;
-        public LoginViewModel(IApiHelper apiHelper)
+        private IEventAggregator _events;
+        public LoginViewModel(IApiHelper apiHelper,IEventAggregator events)
         {
             _apiHelper = apiHelper;
+            _events = events;
         }
         public string UserName
         {
@@ -95,6 +98,7 @@ namespace MPSWPFDesktopUI.ViewModels
                 var result = await _apiHelper.Authenticate(UserName, Password);
                 //Capture more information about the user
                 await _apiHelper.GetLoggedUserInfo(result.Access_Token);
+                await _events.PublishOnUIThreadAsync(new LogOnEvent());
             }
             catch (Exception ex)
             {

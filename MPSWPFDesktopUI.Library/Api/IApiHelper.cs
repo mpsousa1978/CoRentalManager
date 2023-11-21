@@ -1,6 +1,5 @@
-﻿
-using MPSWPFDesktopUI.Library.Models;
-using MPSWPFDesktopUI.Models;
+﻿using MPSWPFDesktopUI.Models;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace MPSWPFDesktopUI.Library.Api
@@ -9,5 +8,6 @@ namespace MPSWPFDesktopUI.Library.Api
     {
         Task<AuthenticatedUserModel> Authenticate(string username, string password);
         Task GetLoggedUserInfo(string token);
+        HttpClient ApiClient { get; }
     }
 }

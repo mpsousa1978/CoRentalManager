@@ -1,4 +1,6 @@
 ﻿using Caliburn.Micro;
+using MPSWPFDesktopUI.Library.Api;
+using MPSWPFDesktopUI.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,9 +12,38 @@ namespace MPSWPFDesktopUI.ViewModels
 {
     public class SalesViewModel:Screen
     {
-		private BindingList<string> _products;
+        private IProductEndPoint _productEndPoint;
+        public SalesViewModel( IProductEndPoint productEndPoint)
+        {
+            _productEndPoint = productEndPoint;
+            
+        }
 
-		public BindingList<string> Products
+        private ProductModel _selectProduct;
+
+        public ProductModel SelectProduct
+        {
+            get { return _selectProduct; }
+            set {
+                _selectProduct = value;
+                NotifyOfPropertyChange(() => SelectProduct);
+                NotifyOfPropertyChange(() => CanAddtoCart);
+            }
+        }
+
+        protected override async void OnViewLoaded(object view)
+        {
+            base.OnViewLoaded(view);
+            await LoadProduct();
+        }
+        private async Task LoadProduct()
+        {
+            var productList = await _productEndPoint.GetAll();
+            Products = new BindingList<ProductModel>(productList);
+        }
+
+        private BindingList<ProductModel> _products;
+		public BindingList<ProductModel> Products
 		{
 			get { return _products; }
 			set { 
@@ -21,9 +52,9 @@ namespace MPSWPFDesktopUI.ViewModels
             }
 		}
 
-        private BindingList<string> _cart;
+        private BindingList<CartItemModel> _cart = new BindingList<CartItemModel>();
 
-        public BindingList<string> Cart
+        public BindingList<CartItemModel> Cart
         {
             get { return _cart; }
             set
@@ -34,13 +65,16 @@ namespace MPSWPFDesktopUI.ViewModels
         }
 
 
-        private string _itemQuantaty;
 
-		public string ItemQuantaty
+        private int _itemQuantaty = 0;
+
+		public int ItemQuantaty
         {
 			get { return _itemQuantaty; }
 			set { _itemQuantaty = value;
                 NotifyOfPropertyChange(() => ItemQuantaty);
+                NotifyOfPropertyChange(() => CanAddtoCart);
+                
             }
 		}
 
@@ -48,7 +82,13 @@ namespace MPSWPFDesktopUI.ViewModels
             //TODO Replace de calculator
             get
             {
-                return "$0.00";
+                decimal subTotal = 0;
+                foreach (var item in Cart)
+                {
+                    subTotal += (item.Product.RetailPrice * item.QuantatyInCart);
+                }
+
+                return subTotal.ToString("C");
             }
         }
 
@@ -74,17 +114,43 @@ namespace MPSWPFDesktopUI.ViewModels
         {
             get
             {
-
                 //make sure something is selected
                 //make sure there is an item quantaty
-
+                if(ItemQuantaty > 0 && SelectProduct?.QuantatyInStock >= ItemQuantaty )
+                {
+                    return true;
+                }
+                else
+                {
                     return false;
+                }
+                    
 
             }
         }
 
         public void AddtoCart()
         {
+            CartItemModel existItem = Cart.FirstOrDefault(x => x.Product.ProductName == SelectProduct.ProductName);
+            if (existItem != null)
+            {
+                existItem.QuantatyInCart += ItemQuantaty;
+                Cart.Remove(existItem);
+                Cart.Add(existItem);
+            }
+            else
+            {
+                CartItemModel item = new CartItemModel()
+                {
+                    Product = SelectProduct,
+                    QuantatyInCart = ItemQuantaty
+                };
+                Cart.Add(item);
+            }
+
+            SelectProduct.QuantatyInStock -= ItemQuantaty;
+            ItemQuantaty = 0;
+            NotifyOfPropertyChange(() => SubTotal);
         }
 
         public bool CanRemoveFromCart
@@ -102,6 +168,9 @@ namespace MPSWPFDesktopUI.ViewModels
 
         public void RemoveFromCart()
         {
+
+            NotifyOfPropertyChange(() => SubTotal);
+
         }
 
 
