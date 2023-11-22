@@ -21,7 +21,7 @@ namespace MPSDataManager.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("EFDataConnection", throwIfV1Schema: false)
         {
         }
         

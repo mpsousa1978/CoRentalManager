@@ -36,7 +36,7 @@ namespace MPSDataManager.App_Start
                             name = "userName",
                             required = false,
                             @in = "formData",
-                            @default = "marcio_sousa@hotmail.com"
+                            @default = "marcio@marcio.com"
                         },
                         new  Parameter 
                         {
@@ -44,7 +44,7 @@ namespace MPSDataManager.App_Start
                             name = "password",
                             required = false,
                             @in = "formData",
-                            @default = "MPsousa123."
+                            @default = "Marcio123."
                         }
                     }
                 }
