@@ -116,13 +116,19 @@ namespace MPSWPFDesktopUI.ViewModels
             decimal taxAmount = 0;
             decimal taxRate = _configHelper.GetTaxRate()/100;
 
-            foreach (var item in Cart)
-            {
-                if (item.Product.Istaxable)
-                {
-                    taxAmount += (item.Product.RetailPrice * (item.QuantatyInCart * taxRate));
-                }
-            }
+            //Linq
+            taxAmount = Cart
+                .Where(x => x.Product.Istaxable)
+                .Sum(x => x.Product.RetailPrice * (x.QuantatyInCart * taxRate));
+
+
+            //foreach (var item in Cart)
+            //{
+            //    if (item.Product.Istaxable)
+            //    {
+            //        taxAmount += (item.Product.RetailPrice * (item.QuantatyInCart * taxRate));
+            //    }
+            //}
             return taxAmount;
         }
 
