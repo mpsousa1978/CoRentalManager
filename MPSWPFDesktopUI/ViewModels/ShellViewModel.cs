@@ -15,18 +15,16 @@ namespace MPSWPFDesktopUI.ViewModels
     {
         private IEventAggregator _events;
         private SalesViewModel _salesVm;
-        private SimpleContainer _container;
 
         [Obsolete]
-        public ShellViewModel(IEventAggregator events,SalesViewModel salesVM,SimpleContainer container) 
+        public ShellViewModel(IEventAggregator events,SalesViewModel salesVM) 
         {
             _events = events;
             _salesVm = salesVM;
-            _container = container;
 
             _events.Subscribe(this);
 
-            ActivateItemAsync(_container.GetInstance<LoginViewModel>());
+            ActivateItemAsync(IoC.Get<LoginViewModel>());
 
         }
 
