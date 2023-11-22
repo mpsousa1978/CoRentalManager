@@ -71,6 +71,8 @@
     <Compile Include="Api\IApiHelper.cs" />
     <Compile Include="Api\IProductEndPoint.cs" />
     <Compile Include="Api\ProductEndPoint.cs" />
+    <Compile Include="Helpers\ConfigHelper.cs" />
+    <Compile Include="Helpers\IConfigHelper.cs" />
     <Compile Include="Models\AuthenticatedUserModel.cs" />
     <Compile Include="Models\CartItemModel.cs" />
     <Compile Include="Models\ILoggedInUserModel.cs" />

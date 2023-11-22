@@ -13,5 +13,6 @@ namespace MPSWPFDesktopUI.Library.Models
         public string Description { get; set; }
         public decimal RetailPrice { get; set; }
         public int QuantatyInStock { get; set; }
+        public bool Istaxable { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using MPSWPFDesktopUI.Library.Api;
+using MPSWPFDesktopUI.Library.Helpers;
 using MPSWPFDesktopUI.Library.Models;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,15 @@ namespace MPSWPFDesktopUI.ViewModels
     public class SalesViewModel:Screen
     {
         private IProductEndPoint _productEndPoint;
-        public SalesViewModel( IProductEndPoint productEndPoint)
+        private IConfigHelper _configHelper;
+
+
+        public SalesViewModel( IProductEndPoint productEndPoint, IConfigHelper configHelper)
         {
             _productEndPoint = productEndPoint;
-            
+            _configHelper = configHelper;
+
+
         }
 
         private ProductModel _selectProduct;
@@ -82,33 +88,56 @@ namespace MPSWPFDesktopUI.ViewModels
             //TODO Replace de calculator
             get
             {
-                decimal subTotal = 0;
-                foreach (var item in Cart)
-                {
-                    subTotal += (item.Product.RetailPrice * item.QuantatyInCart);
-                }
-
-                return subTotal.ToString("C");
+                return CalculateSubTotal().ToString("C");
             }
         }
+
+        private decimal CalculateSubTotal()
+        {
+            decimal subTotal = 0;
+            foreach (var item in Cart)
+            {
+                subTotal += (item.Product.RetailPrice * item.QuantatyInCart);
+            }
+            return subTotal;
+        }
+
+        public string Tax
+        {
+            get
+            {
+
+                return CalculateTax().ToString("C");
+
+            }
+        }
+        private decimal CalculateTax()
+        {
+            decimal taxAmount = 0;
+            decimal taxRate = _configHelper.GetTaxRate()/100;
+
+            foreach (var item in Cart)
+            {
+                if (item.Product.Istaxable)
+                {
+                    taxAmount += (item.Product.RetailPrice * (item.QuantatyInCart * taxRate));
+                }
+            }
+            return taxAmount;
+        }
+
 
         public string Total
         {
             //TODO Replace de calculator
             get
             {
-                return "$0.00";
+                decimal total = CalculateSubTotal() + CalculateTax(); 
+                return total.ToString("C");
             }
         }
 
-        public string Tax
-        {
-            //TODO Replace de calculator
-            get
-            {
-                return "$0.00";
-            }
-        }
+
 
         public bool CanAddtoCart
         {
@@ -151,6 +180,8 @@ namespace MPSWPFDesktopUI.ViewModels
             SelectProduct.QuantatyInStock -= ItemQuantaty;
             ItemQuantaty = 0;
             NotifyOfPropertyChange(() => SubTotal);
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
         }
 
         public bool CanRemoveFromCart
@@ -170,6 +201,8 @@ namespace MPSWPFDesktopUI.ViewModels
         {
 
             NotifyOfPropertyChange(() => SubTotal);
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
 
         }
 
