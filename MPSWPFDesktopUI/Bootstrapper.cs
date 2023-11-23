@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using AutoMapper;
+using Caliburn.Micro;
 using MPSWPFDesktopUI.Library.Api;
 using MPSWPFDesktopUI.Library.Helpers;
 using MPSWPFDesktopUI.Library.Models;
@@ -28,9 +29,24 @@ namespace MPSWPFDesktopUI
             "PasswordChanged");
         }
 
+        private IMapper COnfigureAutomapper()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<ProductModel, ProductDisplayModel>();
+                cfg.CreateMap<CartItemModel, CartItemDisplayModel>();
+            });
+
+            var output = config.CreateMapper(); //to display item in screem
+            return output;
+        }
 
         protected override void Configure()
         {
+
+
+            _container.Instance(COnfigureAutomapper());
+
             _container.Instance(_container)
                 .PerRequest<IProductEndPoint, ProductEndPoint>()
                 .PerRequest<ISaleEndPoint, SaleEndPoint>();

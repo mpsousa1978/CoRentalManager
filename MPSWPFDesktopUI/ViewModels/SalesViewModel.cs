@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using MPSWPFDesktopUI.Library.Api;
 using MPSWPFDesktopUI.Library.Helpers;
 using MPSWPFDesktopUI.Library.Models;
+using AutoMapper;
+using MPSWPFDesktopUI.Models;
 
 namespace MPSWPFDesktopUI.ViewModels
 {
@@ -16,19 +18,21 @@ namespace MPSWPFDesktopUI.ViewModels
         private IProductEndPoint _productEndPoint;
         private ISaleEndPoint _saleEndPoint;
         private IConfigHelper _configHelper;
+        private IMapper _mapper;
 
 
-        public SalesViewModel( IProductEndPoint productEndPoint, IConfigHelper configHelper, ISaleEndPoint saleEndPoint)
+        public SalesViewModel( IProductEndPoint productEndPoint, IConfigHelper configHelper, ISaleEndPoint saleEndPoint, IMapper mapper)
         {
             _productEndPoint = productEndPoint;
             _configHelper = configHelper;
             _saleEndPoint = saleEndPoint;
+            _mapper = mapper;
 
         }
 
-        private ProductModel _selectProduct;
+        private ProductDisplayModel _selectProduct;
 
-        public ProductModel SelectProduct
+        public ProductDisplayModel SelectProduct
         {
             get { return _selectProduct; }
             set {
@@ -46,11 +50,12 @@ namespace MPSWPFDesktopUI.ViewModels
         private async Task LoadProduct()
         {
             var productList = await _productEndPoint.GetAll();
-            Products = new BindingList<ProductModel>(productList);
+            var products = _mapper.Map<List<ProductDisplayModel>>(productList);
+            Products = new BindingList<ProductDisplayModel>(products);
         }
 
-        private BindingList<ProductModel> _products;
-		public BindingList<ProductModel> Products
+        private BindingList<ProductDisplayModel> _products;
+		public BindingList<ProductDisplayModel> Products
 		{
 			get { return _products; }
 			set { 
@@ -59,9 +64,9 @@ namespace MPSWPFDesktopUI.ViewModels
             }
 		}
 
-        private BindingList<CartItemModel> _cart = new BindingList<CartItemModel>();
+        private BindingList<CartItemDisplayModel> _cart = new BindingList<CartItemDisplayModel>();
 
-        public BindingList<CartItemModel> Cart
+        public BindingList<CartItemDisplayModel> Cart
         {
             get { return _cart; }
             set
@@ -167,16 +172,14 @@ namespace MPSWPFDesktopUI.ViewModels
 
         public void AddtoCart()
         {
-            CartItemModel existItem = Cart.FirstOrDefault(x => x.Product.ProductName == SelectProduct.ProductName);
+            CartItemDisplayModel existItem = Cart.FirstOrDefault(x => x.Product.ProductName == SelectProduct.ProductName);
             if (existItem != null)
             {
                 existItem.QuantityInCart += ItemQuantaty;
-                Cart.Remove(existItem);
-                Cart.Add(existItem);
             }
             else
             {
-                CartItemModel item = new CartItemModel()
+                CartItemDisplayModel item = new CartItemDisplayModel()
                 {
                     Product = SelectProduct,
                     QuantityInCart = ItemQuantaty
@@ -184,7 +187,7 @@ namespace MPSWPFDesktopUI.ViewModels
                 Cart.Add(item);
             }
 
-            SelectProduct.QuantatyInStock -= ItemQuantaty;
+            SelectProduct.QuantatyInStock -= ItemQuantaty; //when change the value here automaticle change on screen becouse of mapper
             ItemQuantaty = 0;
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
