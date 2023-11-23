@@ -42,6 +42,23 @@ namespace MPSWPFDesktopUI.ViewModels
             }
         }
 
+
+        
+
+        private CartItemDisplayModel _selectCartItem;
+
+        public CartItemDisplayModel SelectCartItem
+        {
+            get { return _selectCartItem; }
+            set
+            {
+                _selectCartItem = value;
+                NotifyOfPropertyChange(() => SelectCartItem);
+                NotifyOfPropertyChange(() => CanRemoveFromCart);
+            }
+        }
+
+
         protected override async void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
@@ -201,15 +218,24 @@ namespace MPSWPFDesktopUI.ViewModels
             {
 
                 //make sure something is selected
-                //make sure there is an item quantaty
-
-                return false;
+                if (SelectCartItem != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
 
             }
         }
 
         public void RemoveFromCart()
         {
+
+
+            SelectCartItem.Product.QuantatyInStock += SelectCartItem.QuantityInCart;
+            Cart.Remove(SelectCartItem);
 
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);

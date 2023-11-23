@@ -29,6 +29,7 @@ namespace MPSWPFDesktopUI
             "PasswordChanged");
         }
 
+        //have to add the reference Manage Nuget
         private IMapper COnfigureAutomapper()
         {
             var config = new MapperConfiguration(cfg =>
