@@ -1,27 +1,28 @@
 ﻿using Caliburn.Micro;
-using MPSWPFDesktopUI.Library.Api;
-using MPSWPFDesktopUI.Library.Helpers;
-using MPSWPFDesktopUI.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MPSWPFDesktopUI.Library.Api;
+using MPSWPFDesktopUI.Library.Helpers;
+using MPSWPFDesktopUI.Library.Models;
 
 namespace MPSWPFDesktopUI.ViewModels
 {
     public class SalesViewModel:Screen
     {
         private IProductEndPoint _productEndPoint;
+        private ISaleEndPoint _saleEndPoint;
         private IConfigHelper _configHelper;
 
 
-        public SalesViewModel( IProductEndPoint productEndPoint, IConfigHelper configHelper)
+        public SalesViewModel( IProductEndPoint productEndPoint, IConfigHelper configHelper, ISaleEndPoint saleEndPoint)
         {
             _productEndPoint = productEndPoint;
             _configHelper = configHelper;
-
+            _saleEndPoint = saleEndPoint;
 
         }
 
@@ -97,7 +98,7 @@ namespace MPSWPFDesktopUI.ViewModels
             decimal subTotal = 0;
             foreach (var item in Cart)
             {
-                subTotal += (item.Product.RetailPrice * item.QuantatyInCart);
+                subTotal += (item.Product.RetailPrice * item.QuantityInCart);
             }
             return subTotal;
         }
@@ -119,7 +120,7 @@ namespace MPSWPFDesktopUI.ViewModels
             //Linq
             taxAmount = Cart
                 .Where(x => x.Product.Istaxable)
-                .Sum(x => x.Product.RetailPrice * (x.QuantatyInCart * taxRate));
+                .Sum(x => x.Product.RetailPrice * (x.QuantityInCart * taxRate));
 
 
             //foreach (var item in Cart)
@@ -169,7 +170,7 @@ namespace MPSWPFDesktopUI.ViewModels
             CartItemModel existItem = Cart.FirstOrDefault(x => x.Product.ProductName == SelectProduct.ProductName);
             if (existItem != null)
             {
-                existItem.QuantatyInCart += ItemQuantaty;
+                existItem.QuantityInCart += ItemQuantaty;
                 Cart.Remove(existItem);
                 Cart.Add(existItem);
             }
@@ -178,7 +179,7 @@ namespace MPSWPFDesktopUI.ViewModels
                 CartItemModel item = new CartItemModel()
                 {
                     Product = SelectProduct,
-                    QuantatyInCart = ItemQuantaty
+                    QuantityInCart = ItemQuantaty
                 };
                 Cart.Add(item);
             }
@@ -188,6 +189,7 @@ namespace MPSWPFDesktopUI.ViewModels
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckOut);
         }
 
         public bool CanRemoveFromCart
@@ -209,6 +211,8 @@ namespace MPSWPFDesktopUI.ViewModels
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckOut);
+            
 
         }
 
@@ -217,17 +221,30 @@ namespace MPSWPFDesktopUI.ViewModels
         {
             get
             {
-
-                //there is someting in the cart
-
-
+                if (Cart.Count > 0)
+                {
+                    return true;
+                }
                 return false;
 
             }
         }
 
-        public void CheckOut()
+        public async Task CheckOut()
         {
+
+            SaleModel sale = new SaleModel();
+            foreach (var item in  Cart)
+            {
+                sale.SaleDetails.Add(new SaleDetailModel
+                {
+                    ProductId = item.Product.Id,
+                    Quantity = item.QuantityInCart
+                });
+            }
+
+            
+            await _saleEndPoint.PostSale(sale);
         }
 
 

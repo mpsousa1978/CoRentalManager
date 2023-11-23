@@ -74,6 +74,10 @@
     <Build Include="dbo\Store Procedures\spUserLookup.sql" />
     <Build Include="dbo\Store Procedures\spUser.sql" />
     <Build Include="dbo\Store Procedures\spProductGetAll.sql" />
+    <Build Include="dbo\Store Procedures\spProductGetById.sql" />
+    <Build Include="dbo\Store Procedures\spSaleInsert.sql" />
+    <Build Include="dbo\Store Procedures\spSaleDetailInsert.sql" />
+    <Build Include="dbo\Store Procedures\spSaleLookUp.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MPSData.refactorlog" />

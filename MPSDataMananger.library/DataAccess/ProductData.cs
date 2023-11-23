@@ -17,5 +17,15 @@ namespace MPSDataMananger.library.DataAccess
             var output = sql.LoadData<ProductModel, dynamic>("[dbo].spProductGetAll", null, "MPSDataConnection");
             return output;
         }
+
+
+        public ProductModel GetProductById(int productId)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var output = sql.LoadData<ProductModel, dynamic>("[dbo].spProductGetById", new { Id = productId }, "MPSDataConnection").FirstOrDefault();
+            return output;
+        }
     }
+
 }

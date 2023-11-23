@@ -12,8 +12,8 @@ namespace MPSWPFDesktopUI.ViewModels
     public class LoginViewModel:Screen
     {
 
-        private string _userName;
-        private string _password;
+        private string _userName = "marcio@marcio.com";
+        private string _password = "Marcio123.";
         private IApiHelper _apiHelper;
         private IEventAggregator _events;
         public LoginViewModel(IApiHelper apiHelper,IEventAggregator events)

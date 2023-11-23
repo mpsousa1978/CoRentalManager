@@ -16,7 +16,6 @@ namespace MPSDataManager.Controllers
         [HttpGet]
         public List<ProductModel> Get()
         {
-            
             ProductData product = new ProductData();
             return product.GetProducts();
         }
