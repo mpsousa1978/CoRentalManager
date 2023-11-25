@@ -10,5 +10,7 @@ namespace MPSWPFDesktopUI.Library.Models
         string Id { get; set; }
         string LastName { get; set; }
         string Toekn { get; set; }
+
+        void LogOffUser();
     }
 }

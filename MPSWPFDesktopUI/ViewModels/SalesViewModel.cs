@@ -10,6 +10,7 @@ using MPSWPFDesktopUI.Library.Helpers;
 using MPSWPFDesktopUI.Library.Models;
 using AutoMapper;
 using MPSWPFDesktopUI.Models;
+using System.Runtime.InteropServices;
 
 namespace MPSWPFDesktopUI.ViewModels
 {
@@ -30,6 +31,31 @@ namespace MPSWPFDesktopUI.ViewModels
 
         }
 
+
+        protected override async void OnViewLoaded(object view)
+        {
+            base.OnViewLoaded(view);
+            await LoadProduct();
+        }
+        private async Task LoadProduct()
+        {
+            var productList = await _productEndPoint.GetAll();
+            var products = _mapper.Map<List<ProductDisplayModel>>(productList);
+            Products = new BindingList<ProductDisplayModel>(products);
+
+        }
+
+
+        private async Task ResetSaleViewModel()
+        {
+           Cart = new BindingList<CartItemDisplayModel>();
+            //Toto Add clearing the selectedCartItem if it does not do it itself
+            await LoadProduct();
+            NotifyOfPropertyChange(() => SubTotal);
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckOut);
+        }
         private ProductDisplayModel _selectProduct;
 
         public ProductDisplayModel SelectProduct
@@ -59,17 +85,7 @@ namespace MPSWPFDesktopUI.ViewModels
         }
 
 
-        protected override async void OnViewLoaded(object view)
-        {
-            base.OnViewLoaded(view);
-            await LoadProduct();
-        }
-        private async Task LoadProduct()
-        {
-            var productList = await _productEndPoint.GetAll();
-            var products = _mapper.Map<List<ProductDisplayModel>>(productList);
-            Products = new BindingList<ProductDisplayModel>(products);
-        }
+
 
         private BindingList<ProductDisplayModel> _products;
 		public BindingList<ProductDisplayModel> Products
@@ -241,6 +257,7 @@ namespace MPSWPFDesktopUI.ViewModels
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
             NotifyOfPropertyChange(() => CanCheckOut);
+            NotifyOfPropertyChange(() => CanAddtoCart);
             
 
         }
@@ -274,6 +291,7 @@ namespace MPSWPFDesktopUI.ViewModels
 
             
             await _saleEndPoint.PostSale(sale);
+            await ResetSaleViewModel();
         }
 
 
