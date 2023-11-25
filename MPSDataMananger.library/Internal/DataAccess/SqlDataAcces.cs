@@ -71,21 +71,37 @@ namespace MPSDataMananger.Library.Internal.DataAcess
                     commandType: CommandType.StoredProcedure, transaction: _transacion);
         }
 
+        private bool isCloserd = false;  
         public void CommitTransaction()
         {
             _transacion?.Commit();
             _connection?.Close();
+            isCloserd = true;
         }
 
         public void RollBackTransaction()
         {
             _transacion?.Rollback();
             _connection?.Close();
+            isCloserd = true;
         }
 
         public void Dispose()
         {
-            
+            if (isCloserd == false)
+            {
+                try
+                {
+                    CommitTransaction();
+                }
+                catch
+                {
+
+                    //TODO - Log this issue
+                }
+            }
+            _transacion = null;
+            _connection= null;
         }
 
 
