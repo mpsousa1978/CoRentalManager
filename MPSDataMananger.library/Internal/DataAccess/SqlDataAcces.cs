@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace MPSDataMananger.Library.Internal.DataAcess
 
 {
-    internal class SqlDataAccess //:IDisposable //at the end close all connection
+    internal class SqlDataAccess :IDisposable //at the end close all connection
     {
         public string GetConnectionString( string name)
         {
@@ -83,10 +83,10 @@ namespace MPSDataMananger.Library.Internal.DataAcess
             _connection?.Close();
         }
 
-        //public void Dispose()
-        //{
-        //    CommitTransaction();
-        //}
+        public void Dispose()
+        {
+            
+        }
 
 
         //open connect/start transaction method
