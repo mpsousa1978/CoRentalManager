@@ -16,7 +16,7 @@ namespace MPSWPFDesktopUI.Library.Models
         public DateTime CreatedDate { get; set; }
 
 
-        public void LogOffUser()
+        public void ResetUser() //method
         {
             Toekn = null;
             Id = null;

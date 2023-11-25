@@ -16,9 +16,9 @@ namespace MPSWPFDesktopUI.ViewModels
     {
         private IEventAggregator _events;
         private SalesViewModel _salesVm;
-        private ILoggedInUserModel _loggedInUserModel;
+        private ILoggedInUserModel _user;
 
-        public ShellViewModel(IEventAggregator events,SalesViewModel salesVM,ILoggedInUserModel loggedInUserModel) 
+        public ShellViewModel(IEventAggregator events,SalesViewModel salesVM,ILoggedInUserModel user) 
         {
             _events = events;
             _salesVm = salesVM;
@@ -26,14 +26,14 @@ namespace MPSWPFDesktopUI.ViewModels
             _events.Subscribe(this);
 
             ActivateItemAsync(IoC.Get<LoginViewModel>());
-            _loggedInUserModel=loggedInUserModel;
+            _user= user;
 
         }
         public bool IsLoggeIn
         {
             get
             {
-                if (!string.IsNullOrWhiteSpace( _loggedInUserModel.Toekn))
+                if (!string.IsNullOrWhiteSpace( _user.Toekn))
                 {
                     return true;
                 }
@@ -52,7 +52,7 @@ namespace MPSWPFDesktopUI.ViewModels
 
         public void LogOut()
         {
-            _loggedInUserModel.LogOffUser();
+            _user.ResetUser();
             ActivateItemAsync(IoC.Get<LoginViewModel>());
             NotifyOfPropertyChange(() => IsLoggeIn);
 

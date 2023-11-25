@@ -15,7 +15,7 @@ namespace MPSDataMananger.library.DataAccess
 
         public void SaveSale(SaleModel saleInfo,string CashierId)
         {
-            SqlDataAccess sql = new SqlDataAccess();
+            
             ProductData product = new ProductData();
             List<SaleDetailDBModel> details = new List<SaleDetailDBModel>();
             var taxRate = ConfigHelper.GetTaxRate();
@@ -53,23 +53,60 @@ namespace MPSDataMananger.library.DataAccess
 
             sale.Total = sale.SubTotal + sale.Tax;
 
-            sql.SaveData("dbo.spSaleInsert",sale, "MPSDataConnection");
-
-            //Get the ID from the sale mode
-            sale.Id = sql.LoadData<int,dynamic>("dbo.spSaleLookUp", new {CashierId = sale.CashierId,SaleDate = sale.SaleDate}, "MPSDataConnection").FirstOrDefault();
-
-            
-
-            //finish filling i the sale detail model
-
-            foreach ( var item in details )
+            sale.Total = sale.SubTotal + sale.Tax;
+            using (SqlDataAccess sql = new SqlDataAccess())
             {
-                item.SaleId = sale.Id;
-                sql.SaveData("dbo.spSaleDetailInsert", item, "MPSDataConnection");
-            }
+                try
+                {
+                    sql.StartTransaction("MPSDataConnection");
+                    //save the sale model
+                    sql.SaveDataInTransaction("dbo.spSaleInsert", sale);
+                    //Get the ID from the sale mode
+                    sale.Id = sql.LoadDataInTransaction<int, dynamic>("dbo.spSaleLookUp", new { CashierId = sale.CashierId, SaleDate = sale.SaleDate }).FirstOrDefault();
+
+                    //finish filling i the sale detail model
+
+                    foreach (var item in details)
+                    {
+                        item.SaleId = sale.Id;
+                        //save the sale model
+                        sql.SaveDataInTransaction("dbo.spSaleDetailInsert", item);
+                    }
+
+                    sql.CommitTransaction();
+                }
+                catch 
+                {
+
+                    sql.RollBackTransaction();
+                    throw;
+                }
 
 
-            
+            };
+
+
+
+            //////****************sem transaction
+            ////SqlDataAccess sql = new SqlDataAccess();
+
+            //////save the sale model
+            ////sql.SaveData("dbo.spSaleInsert",sale, "MPSDataConnection");
+
+            //////Get the ID from the sale mode
+            ////sale.Id = sql.LoadData<int,dynamic>("dbo.spSaleLookUp", new {CashierId = sale.CashierId,SaleDate = sale.SaleDate}, "MPSDataConnection").FirstOrDefault();
+
+            //////finish filling i the sale detail model
+
+            ////foreach ( var item in details )
+            ////{
+            ////    item.SaleId = sale.Id;
+            ////    //save the sale model
+            ////    sql.SaveData("dbo.spSaleDetailInsert", item, "MPSDataConnection");
+            ////}
+
+
+
         }
 
 
