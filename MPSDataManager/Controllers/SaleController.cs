@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using MPSDataManager.library.Models;
 using MPSDataManager.Models;
 using MPSDataMananger.library.DataAccess;
+using MPSDataMananger.library.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,5 +26,13 @@ namespace MPSDataManager.Controllers
             data.SaveSale(sale, userID);
 
         }
+        [Route("GetSalesReport")]
+        public List<SaleReportModel> GetSalesReport()
+        {
+            SaleData data = new SaleData();
+            return data.GetSaleReposts();
+        }
+
+
     }
 }

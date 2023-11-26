@@ -5,6 +5,7 @@ using MPSDataMananger.Library.Internal.DataAcess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -85,30 +86,35 @@ namespace MPSDataMananger.library.DataAccess
 
             };
 
+        }
 
+        public List<SaleReportModel> GetSaleReposts() 
+        {
+            SqlDataAccess sql = new SqlDataAccess();
 
-            //////****************sem transaction
-            ////SqlDataAccess sql = new SqlDataAccess();
-
-            //////save the sale model
-            ////sql.SaveData("dbo.spSaleInsert",sale, "MPSDataConnection");
-
-            //////Get the ID from the sale mode
-            ////sale.Id = sql.LoadData<int,dynamic>("dbo.spSaleLookUp", new {CashierId = sale.CashierId,SaleDate = sale.SaleDate}, "MPSDataConnection").FirstOrDefault();
-
-            //////finish filling i the sale detail model
-
-            ////foreach ( var item in details )
-            ////{
-            ////    item.SaleId = sale.Id;
-            ////    //save the sale model
-            ////    sql.SaveData("dbo.spSaleDetailInsert", item, "MPSDataConnection");
-            ////}
-
+            var output = sql.LoadData<SaleReportModel, dynamic>("dbo.[spSale_SaleRepost]", new {}, "MPSDataConnection");
+            return output;
 
 
         }
 
+        //////****************sem transaction
+        ////SqlDataAccess sql = new SqlDataAccess();
 
+        //////save the sale model
+        ////sql.SaveData("dbo.spSaleInsert",sale, "MPSDataConnection");
+
+        //////Get the ID from the sale mode
+        ////sale.Id = sql.LoadData<int,dynamic>("dbo.spSaleLookUp", new {CashierId = sale.CashierId,SaleDate = sale.SaleDate}, "MPSDataConnection").FirstOrDefault();
+
+        //////finish filling i the sale detail model
+
+        ////foreach ( var item in details )
+        ////{
+        ////    item.SaleId = sale.Id;
+        ////    //save the sale model
+        ////    sql.SaveData("dbo.spSaleDetailInsert", item, "MPSDataConnection");
+        ////}
+        ///
     }
 }
