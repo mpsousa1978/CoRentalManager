@@ -10,7 +10,7 @@ using System.Web.Http;
 
 namespace MPSDataManager.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Cashier")]
     public class ProductController : ApiController
     {
         [HttpGet]

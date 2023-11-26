@@ -10,7 +10,6 @@ using MPSDataMananger.Library.DataAccess;
 namespace MPSDataManager.Controllers
 {
     [Authorize]
-
     public class UserController : ApiController
     {
         public UserModel GetById()

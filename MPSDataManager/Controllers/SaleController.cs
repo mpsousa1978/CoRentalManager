@@ -18,6 +18,7 @@ namespace MPSDataManager.Controllers
     [Authorize]
     public class SaleController : ApiController
     {
+        [Authorize(Roles = "Cashier")]
         public void Post(SaleModel sale)
         {
 
@@ -26,9 +27,18 @@ namespace MPSDataManager.Controllers
             data.SaveSale(sale, userID);
 
         }
+        [Authorize(Roles = "Admin,Manager")]
         [Route("GetSalesReport")]
         public List<SaleReportModel> GetSalesReport()
         {
+            //if (RequestContext.Principal.IsInRole("Admin"))
+            //{
+            //    //do admin stuff
+            //}
+            //else if (RequestContext.Principal.IsInRole("Admin"))
+            //{
+            //    //do manager stuff
+            //}
             SaleData data = new SaleData();
             return data.GetSaleReposts();
         }
