@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spProductGetAll]
+﻿CREATE PROCEDURE dbo.spProductGetAll
 AS
 begin
 	set nocount on;
