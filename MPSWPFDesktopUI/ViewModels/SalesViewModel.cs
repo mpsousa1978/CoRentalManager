@@ -11,6 +11,8 @@ using MPSWPFDesktopUI.Library.Models;
 using AutoMapper;
 using MPSWPFDesktopUI.Models;
 using System.Runtime.InteropServices;
+using System.Dynamic;
+using System.Windows;
 
 namespace MPSWPFDesktopUI.ViewModels
 {
@@ -20,22 +22,41 @@ namespace MPSWPFDesktopUI.ViewModels
         private ISaleEndPoint _saleEndPoint;
         private IConfigHelper _configHelper;
         private IMapper _mapper;
+        private readonly StatusInfoViewModel _status;
+        private readonly IWindowManager _window;
 
-
-        public SalesViewModel( IProductEndPoint productEndPoint, IConfigHelper configHelper, ISaleEndPoint saleEndPoint, IMapper mapper)
+        public SalesViewModel( IProductEndPoint productEndPoint, IConfigHelper configHelper, 
+            ISaleEndPoint saleEndPoint, IMapper mapper,StatusInfoViewModel status,IWindowManager window)
         {
             _productEndPoint = productEndPoint;
             _configHelper = configHelper;
             _saleEndPoint = saleEndPoint;
             _mapper = mapper;
-
+            _status = status;
+            _window = window;
         }
 
 
         protected override async void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
-            await LoadProduct();
+            try
+            {
+                await LoadProduct();
+            }
+            catch (Exception ex)
+            {
+                dynamic setting = new ExpandoObject();
+                setting.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                setting.ResizeMode = ResizeMode.NoResize;
+                setting.Title = "System Error";
+
+                //var info = IoC.Get<StatusInfoViewModel>();
+
+                _status.UpDateMessage("Error", ex.Message);
+                await _window.ShowDialogAsync(_status,null, setting);
+                TryCloseAsync();
+            }
         }
         private async Task LoadProduct()
         {
