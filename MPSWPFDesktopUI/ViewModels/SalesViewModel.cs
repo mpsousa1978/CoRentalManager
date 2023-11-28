@@ -55,7 +55,7 @@ namespace MPSWPFDesktopUI.ViewModels
 
                 _status.UpDateMessage("Error", ex.Message);
                 await _window.ShowDialogAsync(_status,null, setting);
-                TryCloseAsync();
+                await TryCloseAsync();
             }
         }
         private async Task LoadProduct()

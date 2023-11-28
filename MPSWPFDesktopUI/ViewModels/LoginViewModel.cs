@@ -59,8 +59,6 @@ namespace MPSWPFDesktopUI.ViewModels
             }
         }
 
-        private bool _isErrorVisible;
-
         public bool IsErrorVisible
         {
             get 

@@ -68,13 +68,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ApiHelper.cs" />
+    <Compile Include="Api\ApplicationUserModel.cs" />
     <Compile Include="Api\IApiHelper.cs" />
     <Compile Include="Api\IProductEndPoint.cs" />
     <Compile Include="Api\ISaleEndPoint.cs" />
+    <Compile Include="Api\IUserEndPoint.cs" />
     <Compile Include="Api\ProductEndPoint.cs" />
     <Compile Include="Api\SaleEndPoint.cs" />
+    <Compile Include="Api\UserEndPoint.cs" />
     <Compile Include="Helpers\ConfigHelper.cs" />
     <Compile Include="Helpers\IConfigHelper.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\AuthenticatedUserModel.cs" />
     <Compile Include="Models\CartItemModel.cs" />
     <Compile Include="Models\ILoggedInUserModel.cs" />
