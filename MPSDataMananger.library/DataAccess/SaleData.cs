@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Extensions.Configuration;
 using MPSDataManager.library.Models;
 using MPSDataMananger.library.Models;
 using MPSDataMananger.Library.Internal.DataAcess;
@@ -13,11 +14,15 @@ namespace MPSDataMananger.library.DataAccess
 {
     public class SaleData
     {
-
+        private readonly IConfiguration _config;
+        public SaleData(IConfiguration config)
+        {
+            _config = config;
+        }
         public void SaveSale(SaleModel saleInfo,string CashierId)
         {
             
-            ProductData product = new ProductData();
+            ProductData product = new ProductData(_config);
             List<SaleDetailDBModel> details = new List<SaleDetailDBModel>();
             var taxRate = ConfigHelper.GetTaxRate();
             foreach(var item in saleInfo.SaleDetails)
@@ -55,7 +60,7 @@ namespace MPSDataMananger.library.DataAccess
             sale.Total = sale.SubTotal + sale.Tax;
 
             sale.Total = sale.SubTotal + sale.Tax;
-            using (SqlDataAccess sql = new SqlDataAccess())
+            using (SqlDataAccess sql = new SqlDataAccess(_config))
             {
                 try
                 {
@@ -90,7 +95,7 @@ namespace MPSDataMananger.library.DataAccess
 
         public List<SaleReportModel> GetSaleReposts() 
         {
-            SqlDataAccess sql = new SqlDataAccess();
+            SqlDataAccess sql = new SqlDataAccess(_config);
 
             var output = sql.LoadData<SaleReportModel, dynamic>("dbo.[spSale_SaleRepost]", new {}, "MPSDataConnection");
             return output;

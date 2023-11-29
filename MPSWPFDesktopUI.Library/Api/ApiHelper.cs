@@ -17,10 +17,10 @@ namespace MPSWPFDesktopUI.Library.Api
         private ILoggedInUserModel _loggedInUserModel;
         public ApiHelper(ILoggedInUserModel loggedInUserModel)
         {
-            InitializeApiClente();
+            InitializeApiClient();
             _loggedInUserModel = loggedInUserModel;
         }
-        private void InitializeApiClente()
+        private void InitializeApiClient()
         {
             string api = ConfigurationManager.AppSettings["Api"]; //App.config
 
