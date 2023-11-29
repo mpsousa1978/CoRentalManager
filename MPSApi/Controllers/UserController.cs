@@ -37,7 +37,7 @@ namespace MPSApi.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        [Route("Api/User/Admin/GetAllUsers")]
+        [Route("Admin/GetAllUsers")]
         public List<ApplicationUserModel> GetAllUsers()
         {
             List<ApplicationUserModel> output = new List<ApplicationUserModel>();
@@ -62,8 +62,8 @@ namespace MPSApi.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [Route("Admin/GetAllRoles")]
         [HttpGet]
-        [Route("Api/User/Admin/GetAllRoles")]
         public Dictionary<string, string> GetAllRoles()
         {
                 var roles = _context.Roles.ToDictionary(x => x.Id, x => x.Name);
@@ -71,8 +71,8 @@ namespace MPSApi.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [Route("Admin/AddRole")]
         [HttpPost]
-        [Route("Api/User/Admin/AddRole")]
         public async Task AddRole(UserRolePairModel paring)
         {
             var user = await _userManager.FindByIdAsync(paring.UserId);
@@ -82,8 +82,8 @@ namespace MPSApi.Controllers
 
 
         [Authorize(Roles = "Admin")]
+        [Route("Admin/RemoveRole")]
         [HttpPost]
-        [Route("Api/User/Admin/RemoveRole")]
         public async Task RemoveRole(UserRolePairModel paring)
         {
             var user = await _userManager.FindByIdAsync(paring.UserId);

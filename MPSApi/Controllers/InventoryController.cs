@@ -18,6 +18,7 @@ namespace MPSApi.Controllers
         }
 
         [Authorize(Roles = "Admin,Manager")]
+        [HttpGet]
         public List<InventoryModel> Get()
         {
             InventoryData data = new InventoryData(_config);
@@ -25,6 +26,7 @@ namespace MPSApi.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpPost]
         public void Post(InventoryModel invenory)
         {
             InventoryData data = new InventoryData(_config);

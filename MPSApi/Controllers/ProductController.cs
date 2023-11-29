@@ -24,6 +24,7 @@ namespace MPSApi.Controllers
         {
             _config = config;
         }
+        [HttpGet]
         public List<ProductModel> Get()
         {
             ProductData product = new ProductData(_config);
