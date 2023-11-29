@@ -1,10 +1,13 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+
+
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,15 +16,21 @@ namespace MPSDataMananger.Library.Internal.DataAcess
 {
     internal class SqlDataAccess :IDisposable //at the end close all connection
     {
+        private readonly IConfiguration _config;
+        public SqlDataAccess(IConfiguration config)
+        {
+            _config = config;
+        }
+
         public string GetConnectionString( string name)
         {
-            return ConfigurationManager.ConnectionStrings[name].ConnectionString;
+            return _config.GetConnectionString(name);
         }
 
         public List<T> LoadData<T, U>(string StoreProcedure, U Parameters, string ConnectionStringName)
         {
             string connectionStringName = GetConnectionString(ConnectionStringName);
-
+         
             using (IDbConnection connection = new SqlConnection(connectionStringName))
             {
                 List<T> rows = connection.Query<T>(StoreProcedure, Parameters, commandType: CommandType.StoredProcedure).ToList();
@@ -71,7 +80,10 @@ namespace MPSDataMananger.Library.Internal.DataAcess
                     commandType: CommandType.StoredProcedure, transaction: _transacion);
         }
 
-        private bool isCloserd = false;  
+        private bool isCloserd = false;
+
+        public IConfiguration Config { get; }
+
         public void CommitTransaction()
         {
             _transacion?.Commit();
