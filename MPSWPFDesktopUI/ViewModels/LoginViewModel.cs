@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MPSWPFDesktopUI.ViewModels
@@ -96,7 +97,7 @@ namespace MPSWPFDesktopUI.ViewModels
                 var result = await _apiHelper.Authenticate(UserName, Password);
                 //Capture more information about the user
                 await _apiHelper.GetLoggedUserInfo(result.Access_Token);
-                await _events.PublishOnUIThreadAsync(new LogOnEvent());
+                await _events.PublishOnUIThreadAsync(new LogOnEvent(),new CancellationToken());
             }
             catch (Exception ex)
             {

@@ -25,6 +25,7 @@ namespace MPSDataMananger.library.DataAccess
             ProductData product = new ProductData(_config);
             List<SaleDetailDBModel> details = new List<SaleDetailDBModel>();
             var taxRate = ConfigHelper.GetTaxRate();
+
             foreach(var item in saleInfo.SaleDetails)
             {
                 var detail = new SaleDetailDBModel()

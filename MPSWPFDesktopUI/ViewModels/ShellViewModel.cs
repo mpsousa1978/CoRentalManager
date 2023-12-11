@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using Caliburn.Micro;
 using MPSWPFDesktopUI.EventsModel;
+using MPSWPFDesktopUI.Library.Api;
 using MPSWPFDesktopUI.Library.Models;
 
 
@@ -15,19 +16,18 @@ namespace MPSWPFDesktopUI.ViewModels
     public class ShellViewModel:Conductor<object>,IHandle<LogOnEvent>
     {
         private IEventAggregator _events;
-        private SalesViewModel _salesVm;
         private ILoggedInUserModel _user;
+        private readonly ApiHelper _apiHelper;
 
-        public ShellViewModel(IEventAggregator events,SalesViewModel salesVM,ILoggedInUserModel user) 
+        public ShellViewModel(IEventAggregator events, ILoggedInUserModel user, ApiHelper apiHelper) 
         {
             _events = events;
-            _salesVm = salesVM;
 
-            _events.Subscribe(this);
+            _events.SubscribeOnPublishedThread(this);
 
-            ActivateItemAsync(IoC.Get<LoginViewModel>());
+            ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
             _user= user;
-
+            _apiHelper = apiHelper;
         }
         public bool IsLoggeIn
         {
@@ -49,20 +49,21 @@ namespace MPSWPFDesktopUI.ViewModels
             TryCloseAsync();
         }
 
-        public void UserManagement()
+        public async Task UserManagement()
         {
-            ActivateItemAsync(IoC.Get<UserDisplayViewModel>());
+            await ActivateItemAsync(IoC.Get<UserDisplayViewModel>(), new CancellationToken());
         }
-        public void LogOut()
+        public async Task LogOut()
         {
             _user.ResetUser();
-            ActivateItemAsync(IoC.Get<LoginViewModel>());
+            //_apiHelper.LogOffUser();
+            await ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
             NotifyOfPropertyChange(() => IsLoggeIn);
 
         }
         public async Task HandleAsync(LogOnEvent message, CancellationToken cancellationToken)
         {
-            await ActivateItemAsync(_salesVm);
+            await ActivateItemAsync(IoC.Get<SalesViewModel>(), cancellationToken);
             NotifyOfPropertyChange(() => IsLoggeIn);
         }
     }

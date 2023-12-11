@@ -10,12 +10,16 @@ namespace MPSDataMananger.library
 {
     public class ConfigHelper 
     {
+
         public static decimal GetTaxRate()
         {
 
-            string taxRate = ConfigurationManager.AppSettings["taxRate"];
+            //Console.WriteLine($"Config File Path: {AppDomain.CurrentDomain.SetupInformation.ConfigurationFile}");
 
-            NumberFormatInfo format = new NumberFormatInfo();
+            // string taxRate = ConfigurationManager.AppSettings["taxRate"];
+            string taxRate = "8.75";
+
+             NumberFormatInfo format = new NumberFormatInfo();
             format.NumberDecimalSeparator = ".";
 
             //bool IsValidTtx = decimal.TryParse(taxRate, out decimal output);

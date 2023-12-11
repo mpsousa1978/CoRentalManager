@@ -30,6 +30,9 @@ namespace MPSApi.Controllers
             data.SaveSale(sale, userID);
 
         }
+
+
+
         [Authorize(Roles = "Admin,Manager")]
         [Route("GetSalesReport")]
         [HttpGet]
